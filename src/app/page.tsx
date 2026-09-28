@@ -9,6 +9,7 @@ import { ExploreSection } from '@/components/ExploreSection'
 import { AgentProfile } from '@/components/AgentProfile'
 import { Reveal } from '@/components/Reveal'
 import { AnunciarImovel } from '@/components/AnunciarImovel'
+import { Depoimentos } from '@/components/Depoimentos'
 
 const PASSOS = [
   {
@@ -148,30 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ——— Depoimentos (só com depoimentos reais no config) ——— */}
-      {site.depoimentos.length > 0 && (
-        <section className="bg-white py-24 md:py-32" aria-labelledby="depoimentos">
-          <div className="mx-auto max-w-[1240px] px-5 md:px-8">
-            <Reveal>
-              <p className="sobretitulo">Depoimentos</p>
-              <h2 id="depoimentos" className="titulo-l mt-3">Quem comprou com a {site.corretor.nome.split(' ')[0]}</h2>
-            </Reveal>
-            <div className="trilho mt-12">
-              {site.depoimentos.map((d, i) => (
-                <Reveal key={d.nome} delay={i * 0.06}>
-                  <figure className="h-full rounded-[var(--radius-cartao)] bg-papel p-7">
-                    <blockquote className="text-[17px] leading-relaxed tracking-[-0.01em]">“{d.texto}”</blockquote>
-                    <figcaption className="mt-6 text-[14px]">
-                      <span className="font-semibold">{d.nome}</span>
-                      <span className="block text-suave">{d.contexto}</span>
-                    </figcaption>
-                  </figure>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      <Depoimentos />
 
       <AnunciarImovel />
 

@@ -4,6 +4,7 @@ import { BadgeCheck } from 'lucide-react'
 import { site } from '@/config/site'
 import { linkWhatsApp } from '@/lib/whatsapp'
 import { asset } from '@/lib/base'
+import { useCorretor, type Corretor } from '@/lib/personalizacao'
 import { IconeWhatsApp } from './WhatsAppCTA'
 import { useAgendamento } from './ScheduleVisit'
 
@@ -16,8 +17,7 @@ const iniciais = (nome: string) =>
     .join('')
 
 /** Foto do corretor; sem foto configurada, monograma. */
-function Retrato({ grande = false }: { grande?: boolean }) {
-  const c = site.corretor
+function Retrato({ c, grande = false }: { c: Corretor; grande?: boolean }) {
   const tam = grande ? 'size-full' : 'size-14'
   if (c.foto) return <img src={asset(c.foto)} alt={c.nome} className={`${tam} rounded-[inherit] object-cover object-[50%_42%]`} />
   return (
@@ -34,7 +34,9 @@ function Retrato({ grande = false }: { grande?: boolean }) {
 
 /** Perfil do corretor. `compacto` = cartão lateral da página do imóvel. */
 export function AgentProfile({ compacto = false, imovel, semAcoes = false }: { compacto?: boolean; imovel?: string; semAcoes?: boolean }) {
-  const c = site.corretor
+  const c = useCorretor()
+  const { bio, especialidades } = site.corretor
+  const cargo = [c.cargo, c.creci].filter(Boolean).join(' · ')
   const { abrir } = useAgendamento()
   const msg = imovel ? site.mensagens.imovel(imovel) : site.mensagens.geral
 
@@ -43,12 +45,12 @@ export function AgentProfile({ compacto = false, imovel, semAcoes = false }: { c
       <aside className="rounded-[var(--radius-cartao)] bg-white p-6 shadow-[0_0_0_1px_var(--color-linha)]">
         <div className="flex items-center gap-4">
           <span className="block size-14 overflow-hidden rounded-full">
-            <Retrato />
+            <Retrato c={c} />
           </span>
           <div>
             <p className="text-[16px] font-semibold tracking-[-0.02em]">{c.nome}</p>
             <p className="text-[13.5px] text-suave">
-              {c.cargo} · {c.creci}
+              {cargo}
             </p>
           </div>
         </div>
@@ -73,24 +75,24 @@ export function AgentProfile({ compacto = false, imovel, semAcoes = false }: { c
   return (
     <div className="grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
       <div className="relative aspect-[5/4] overflow-hidden rounded-[28px] md:aspect-[4/5] md:max-w-[440px]">
-        <Retrato grande />
+        <Retrato c={c} grande />
       </div>
       <div>
         <p className="sobretitulo">Quem atende você</p>
         <h2 className="titulo-l mt-3">{c.nome}</h2>
         <p className="mt-2 inline-flex items-center gap-1.5 text-[15px] text-tinta-2">
           <BadgeCheck size={17} strokeWidth={1.6} className="text-acento" aria-hidden />
-          {c.cargo} · {c.creci} · {site.cidade}
+          {cargo} · {site.cidade}
         </p>
         <div className="mt-6 grid max-w-[56ch] gap-4">
-          {c.bio.map((p) => (
+          {bio.map((p) => (
             <p key={p} className="texto-corpo">
               {p}
             </p>
           ))}
         </div>
         <ul className="mt-6 flex flex-wrap gap-2">
-          {c.especialidades.map((e) => (
+          {especialidades.map((e) => (
             <li key={e} className="rounded-full bg-white px-3.5 py-1.5 text-[13.5px] text-tinta-2 shadow-[0_0_0_1px_var(--color-linha)]">
               {e}
             </li>

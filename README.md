@@ -13,6 +13,15 @@ Publicado em: https://sendodonto.github.io/corretor-3d/
 > Para um cliente real: troque todos os dados pelos reais (depoimentos só com autorização)
 > e desligue `demo.ativo`.
 
+## Prospecção (Módulo)
+
+- **Prévia personalizada:** `/gerar-link` (fora do menu) monta um link com o nome do corretor
+  (`?para=Ana%20Ferreira&marca=…&foto=…&creci=…&cargo=…`). O site abre com a marca dele; CRECI e
+  números fictícios não aparecem junto do nome de uma pessoa real. Lógica em
+  `src/lib/personalizacao.ts`.
+- **Prévia do link (WhatsApp):** `public/og.jpg`, gerada por `python scripts/gerar-og.py`.
+- **Vídeo vertical do tour:** `node scripts/gravar-video.mjs [url] [saida.mp4]` (requer ffmpeg).
+
 ## Onde trocar os dados
 
 | O quê | Arquivo |

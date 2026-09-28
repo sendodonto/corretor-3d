@@ -13,7 +13,18 @@ export const metadata: Metadata = {
   title: { default: `${site.marca} — Explore seu próximo imóvel em 3D`, template: `%s · ${site.marca}` },
   description: 'Imóveis em Porto Alegre com tour 3D: explore a casa por dentro e por fora antes mesmo da visita.',
   metadataBase: new URL(site.url),
-  openGraph: { locale: 'pt_BR', type: 'website', siteName: site.marca },
+  // Prévia do link (WhatsApp, Instagram): na demonstração, fala com o corretor que recebe o link.
+  openGraph: {
+    locale: 'pt_BR',
+    type: 'website',
+    siteName: site.demo.ativo ? site.demo.empresa : site.marca,
+    title: site.demo.ativo ? 'Seu site de corretor com tour 3D dos seus imóveis' : `${site.marca} — Imóveis com tour 3D`,
+    description: site.demo.ativo
+      ? 'Veja a demonstração: o cliente explora a casa por fora, por cima e por dentro antes da visita.'
+      : 'Explore o imóvel por fora, por cima e por dentro antes da visita.',
+    images: [{ url: `${site.url}og.jpg`, width: 1200, height: 630, alt: 'Casa em 3D ao lado do texto: seu site com tour 3D dos seus imóveis' }],
+  },
+  twitter: { card: 'summary_large_image', images: [`${site.url}og.jpg`] },
 }
 
 export const viewport: Viewport = { themeColor: '#f7f6f3', width: 'device-width', initialScale: 1 }

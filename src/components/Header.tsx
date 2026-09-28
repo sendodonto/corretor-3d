@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { site } from '@/config/site'
 import { linkDemo } from '@/lib/whatsapp'
+import { useCorretor } from '@/lib/personalizacao'
 import { useAgendamento } from './ScheduleVisit'
 import { Logo } from './Logo'
 
@@ -18,10 +19,20 @@ const LINKS = [
 
 /** Faixa escura no topo: avisa que é uma demonstração e leva ao WhatsApp da Módulo. */
 function FaixaDemo() {
+  const c = useCorretor()
   return (
     <div className="flex h-9 items-center justify-center gap-3 bg-tinta px-4 text-[12.5px] text-white/75">
-      <span className="hidden sm:inline">Site de demonstração criado pela</span>
-      <span className="sm:hidden">Demonstração ·</span>
+      {c.personalizado ? (
+        <>
+          <span className="hidden sm:inline">Prévia do site de {c.nome} criada pela</span>
+          <span className="max-w-[40vw] truncate sm:hidden">Prévia para {c.primeiroNome} ·</span>
+        </>
+      ) : (
+        <>
+          <span className="hidden sm:inline">Site de demonstração criado pela</span>
+          <span className="sm:hidden">Demonstração ·</span>
+        </>
+      )}
       <Logo className="h-[15px] text-white" />
       <a
         href={linkDemo()}
@@ -29,7 +40,7 @@ function FaixaDemo() {
         rel="noopener"
         className="ml-1 inline-flex items-center gap-1 rounded-full bg-white/12 px-2.5 py-1 font-medium text-white transition-colors hover:bg-white/20"
       >
-        Quero um site assim
+        {c.personalizado ? 'Quero este site' : 'Quero um site assim'}
         <ArrowUpRight size={13} strokeWidth={2} aria-hidden />
       </a>
     </div>
@@ -38,6 +49,7 @@ function FaixaDemo() {
 
 /** Logotipo de texto da corretora. */
 export function Marca({ className = '' }: { className?: string }) {
+  const c = useCorretor()
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
@@ -45,7 +57,7 @@ export function Marca({ className = '' }: { className?: string }) {
         <path d="M7 17V9.5L12 6l5 3.5V17h-3.2v-4.2h-3.6V17z" fill="var(--color-papel)" />
       </svg>
       <span className="text-[18px] font-semibold tracking-[-0.035em]">
-        {site.marcaCurta}
+        {c.marcaCurta}
         <span className="font-normal text-suave"> Imóveis</span>
       </span>
     </span>
@@ -76,7 +88,7 @@ export function Header() {
         }`}
       >
         <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-6 px-5 md:px-8">
-          <Link href="/" aria-label={`${site.marca} — início`}>
+          <Link href="/" aria-label="Início">
             <Marca />
           </Link>
 

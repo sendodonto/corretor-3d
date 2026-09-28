@@ -43,3 +43,5 @@ next-env.d.ts
 # fontes pesadas do 3D (ficam fora do repositório)
 /modelos-fonte/
 /renders/
+video-tmp/
+*.mp4
