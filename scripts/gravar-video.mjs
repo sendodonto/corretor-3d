@@ -1,4 +1,4 @@
-// Grava um vídeo vertical (1080×1920) do tour 3D para mandar no WhatsApp:
+// Grava um vídeo vertical (720×1280) do tour 3D para mandar no WhatsApp:
 // casa girando, planta sem telhado e a câmera entrando nos ambientes.
 // Uso: node scripts/gravar-video.mjs [url] [saida.mp4]
 // Requer ffmpeg no PATH.
@@ -73,10 +73,14 @@ const fim = (Date.now() - t0) / 1000
 await ctx.close()
 await browser.close()
 const webm = join(PASTA, readdirSync(PASTA).find((f) => f.endsWith('.webm')))
+// Formato mais compatível (WhatsApp, iPhone, Android antigos): H.264 Main 4.0,
+// 720×1280 e uma faixa de áudio silenciosa (alguns players não abrem vídeo mudo).
 execFileSync('ffmpeg', [
   '-y', '-ss', String(inicio), '-to', String(fim), '-i', webm,
-  '-vf', 'scale=1080:1920:flags=lanczos,fps=30',
-  '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an',
+  '-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=44100', '-shortest',
+  '-vf', 'scale=720:1280:flags=lanczos,fps=30',
+  '-c:v', 'libx264', '-profile:v', 'main', '-level', '4.0', '-preset', 'medium', '-crf', '23', '-pix_fmt', 'yuv420p',
+  '-c:a', 'aac', '-b:a', '64k', '-movflags', '+faststart',
   SAIDA,
 ], { stdio: 'inherit' })
 rmSync(PASTA, { recursive: true, force: true })
