@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { site } from '@/config/site'
 import { useAgendamento } from './ScheduleVisit'
+import { Logo } from './Logo'
 
 const LINKS = [
   { href: '/imoveis', rotulo: 'Imóveis' },
@@ -38,9 +39,8 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-6 px-5 md:px-8">
-        <Link href="/" className="flex items-center gap-2.5" aria-label={`${site.marca} — início`}>
-          <Marca />
-          <span className="text-[17px] font-semibold tracking-[-0.03em]">{site.marca}</span>
+        <Link href="/" className="flex items-center" aria-label={`${site.marca} — início`}>
+          <Logo className="h-6 md:h-7" />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Principal">
@@ -83,15 +83,5 @@ export function Header() {
         </nav>
       )}
     </header>
-  )
-}
-
-/** Monograma: um átrio visto de cima (quadrado com o vazio central). */
-export function Marca({ className = '' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden className={className}>
-      <rect x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-      <rect x="8.5" y="8.5" width="7" height="7" rx="1.5" fill="var(--color-papel)" />
-    </svg>
   )
 }

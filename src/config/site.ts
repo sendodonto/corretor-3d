@@ -5,14 +5,14 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const site = {
-  marca: 'Átrio',
+  marca: 'Módulo',
   descricaoMarca: 'Imóveis explorados em 3D',
   url: 'https://sendodonto.github.io/corretor-3d/',
   cidade: 'Porto Alegre',
   regiao: 'Porto Alegre e região',
 
   corretor: {
-    nome: 'Rafael Moreira',
+    nome: 'Erick Martins',
     cargo: 'Corretor de imóveis',
     /** Número do CRECI real. Enquanto vazio, o site mostra "CRECI em registro". */
     creci: '',

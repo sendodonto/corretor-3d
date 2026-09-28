@@ -1,4 +1,4 @@
-# Átrio — imóveis explorados em 3D
+# Módulo — imóveis explorados em 3D
 
 Site de corretor com tour 3D próprio: **explore seu próximo imóvel antes mesmo da visita**.
 Next.js (export estático) · Tailwind CSS 4 · Motion · three.js.

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { site } from '@/config/site'
 import { linkWhatsApp } from '@/lib/whatsapp'
-import { Marca } from './Header'
+import { Logo } from './Logo'
 
 export function Footer() {
   const c = site.corretor
@@ -9,9 +9,8 @@ export function Footer() {
     <footer className="border-t border-linha bg-papel pb-28 pt-16 md:pb-12">
       <div className="mx-auto grid max-w-[1240px] gap-12 px-5 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:px-8">
         <div>
-          <Link href="/" className="inline-flex items-center gap-2.5">
-            <Marca />
-            <span className="text-[17px] font-semibold tracking-[-0.03em]">{site.marca}</span>
+          <Link href="/" className="inline-flex" aria-label={`${site.marca} — início`}>
+            <Logo className="h-7" />
           </Link>
           <p className="mt-4 max-w-[30ch] text-[14.5px] leading-relaxed text-suave">
             {c.nome}, {c.cargo.toLowerCase()} em {site.regiao}. {c.creci ? `CRECI ${c.creci}.` : 'CRECI em registro.'}
