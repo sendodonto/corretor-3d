@@ -407,7 +407,7 @@ export function Property3DViewer({
           </div>
         )}
 
-        {estado === 'ativo' && (!telaPequena() || imersivo) && (
+        {estado === 'ativo' && (!telaPequena() || imersivo) && (completo || imersivo) && (
           <div className="v3d-ferramentas" role="toolbar" aria-label="Controles do 3D">
             {completo && (
               <>

@@ -733,3 +733,9 @@ select.campo {
     border-left: 1px solid rgb(0 0 0 / 0.06);
   }
 }
+/* Celular: a casa da hero é só imagem; o tour abre na seção Explore. */
+@media (max-width: 899px), (pointer: coarse) {
+  .v3d-hero:not(.is-imersivo) .v3d-capa {
+    display: none;
+  }
+}

@@ -2,15 +2,12 @@ import Link from 'next/link'
 import { ArrowDown, ArrowRight, Box, CalendarCheck, MessageCircle } from 'lucide-react'
 import { site } from '@/config/site'
 import { destaques } from '@/data/imoveis'
-import { linkWhatsApp } from '@/lib/whatsapp'
 import { Property3DViewer } from '@/components/Property3DViewer'
 import { PropertyCard } from '@/components/PropertyCard'
 import { SearchBar } from '@/components/SearchBar'
 import { ExploreSection } from '@/components/ExploreSection'
 import { AgentProfile } from '@/components/AgentProfile'
 import { Reveal } from '@/components/Reveal'
-import { IconeWhatsApp } from '@/components/WhatsAppCTA'
-import { BotaoAgendar } from '@/components/BotaoAgendar'
 import { AnunciarImovel } from '@/components/AnunciarImovel'
 
 const PASSOS = [
@@ -59,10 +56,15 @@ export default function Home() {
                   <ArrowRight size={17} strokeWidth={1.8} aria-hidden />
                 </Link>
                 <a href="#explore" className="botao botao-secundario">
-                  Como é o tour 3D
+                  Explorar em 3D
                   <ArrowDown size={17} strokeWidth={1.8} aria-hidden />
                 </a>
               </div>
+              <Link href="/imoveis/casa-alameda" className="group mt-8 hidden items-center gap-2 text-[14px] text-suave hover:text-tinta lg:inline-flex">
+                <span className="size-1.5 rounded-full bg-acento" aria-hidden />
+                Na imagem: Casa Alameda, Vila Assunção
+                <ArrowRight size={15} strokeWidth={1.8} className="transition-transform group-hover:translate-x-0.5" aria-hidden />
+              </Link>
             </Reveal>
           </div>
 
@@ -75,16 +77,6 @@ export default function Home() {
               poster={{ paisagem: '/posters/casa-hero.webp', retrato: '/posters/casa-hero-retrato.webp' }}
               className="h-full"
             />
-            <Link
-              href="/imoveis/casa-alameda"
-              className="absolute bottom-5 left-5 z-10 hidden items-center gap-3 rounded-2xl bg-white/80 py-2.5 pl-3 pr-4 shadow-[0_0_0_1px_rgb(0_0_0/0.06)] backdrop-blur-xl transition-colors hover:bg-white lg:flex"
-            >
-              <span className="text-[13px] leading-tight">
-                <span className="block font-semibold">Casa Alameda</span>
-                <span className="text-suave">Vila Assunção · 342 m² · 3 quartos</span>
-              </span>
-              <ArrowRight size={16} strokeWidth={1.8} aria-hidden />
-            </Link>
           </div>
         </div>
       </section>
@@ -183,29 +175,6 @@ export default function Home() {
 
       <AnunciarImovel />
 
-      {/* ——— CTA ——— */}
-      <section className="px-5 pb-24 md:px-8 md:pb-32">
-        <Reveal className="mx-auto max-w-[1240px] overflow-hidden rounded-[32px] bg-tinta px-6 py-16 text-white md:px-16 md:py-24">
-          <div className="grid items-end gap-10 md:grid-cols-[1.3fr_1fr]">
-            <div>
-              <h2 className="titulo-l max-w-[16ch] text-balance">Procurando algo específico? Me conte.</h2>
-              <p className="mt-5 max-w-[46ch] text-[1.0625rem] leading-relaxed text-white/65">
-                Bairro, tamanho, orçamento, o que não pode faltar. Eu filtro, mando os que valem a pena em 3D e a gente só
-                visita o que fizer sentido.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3 md:justify-end">
-              <a href={linkWhatsApp()} target="_blank" rel="noopener" className="botao bg-white text-tinta hover:bg-white/90">
-                <span className="text-[#1faa55]">
-                  <IconeWhatsApp size={18} />
-                </span>
-                Falar no WhatsApp
-              </a>
-              <BotaoAgendar className="botao text-white shadow-[inset_0_0_0_1px_rgb(255_255_255/0.3)] hover:shadow-[inset_0_0_0_1px_white]" />
-            </div>
-          </div>
-        </Reveal>
-      </section>
     </>
   )
 }
