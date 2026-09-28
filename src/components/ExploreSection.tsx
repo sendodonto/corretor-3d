@@ -81,6 +81,7 @@ export function ExploreSection() {
               modelo="casa"
               nome="Casa Alameda"
               modoControlado={modo}
+              aoTrocarModo={setModo}
               tamanho="5 MB"
               poster={{ paisagem: '/posters/casa-explore.webp', retrato: '/posters/casa-explore-retrato.webp' }}
               className="h-full"

@@ -89,7 +89,7 @@ export const MODELOS: Record<string, ConfigModelo> = {
     },
     limites: {
       distMin: 3,
-      distMax: 62,
+      distMax: 80,
       polarMin: 0.04,
       polarMax: 1.42,
       azMin: -Infinity,

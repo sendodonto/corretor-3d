@@ -33,6 +33,8 @@ for (const [rota, sel, nome, w, h] of ALVOS.filter((a) => !SO.length || SO.inclu
       ${sel}{position:fixed!important;left:0;top:0;width:${w}px!important;height:${h}px!important;z-index:9999;background:#f7f6f3}`,
   })
   await page.evaluate((s) => document.querySelector(s).scrollIntoView(), sel)
+  // Seções com animação de entrada: o pôster precisa do visualizador visível.
+  await page.addStyleTag({ content: '[style*="opacity"]{opacity:1!important;transform:none!important}' })
   await page.waitForSelector(`${sel}[data-estado="ativo"]`, { timeout: 120000 })
   await page.waitForTimeout(2500)
   const png = await (await page.$(sel)).screenshot()

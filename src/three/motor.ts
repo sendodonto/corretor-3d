@@ -479,7 +479,10 @@ export async function criarMotor(o: OpcoesMotor): Promise<Motor> {
       naVistaInicial = false;
       Object.assign(LIMITES, o.config.limites, limites);
       aplicarLimites();
-      irPara(orbita);
+      // Tela em retrato: recua para caber a mesma largura do modelo.
+      const a = aspectoLivre();
+      const recuo = a < 1 ? Math.min(2, Math.pow(a, -0.75)) : 1;
+      irPara({ ...orbita, dist: Math.min(LIMITES.distMax, orbita.dist * recuo) });
     },
     pausar(sim) {
       pausado = sim;

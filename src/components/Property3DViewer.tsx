@@ -58,8 +58,9 @@ export interface Property3DViewerProps {
   variante?: 'hero' | 'completo'
   /** Modo inicial (casa). */
   modoInicial?: ModoId
-  /** Esconde as abas de modo (a seção de fora controla o modo). */
+  /** Modo controlado pela seção de fora (as abas só aparecem em tela cheia). */
   modoControlado?: ModoId
+  aoTrocarModo?: (modo: ModoId) => void
   poster?: { paisagem: string; retrato: string }
   tamanho?: string
   className?: string
@@ -71,6 +72,7 @@ export function Property3DViewer({
   variante = 'completo',
   modoInicial = 'externa',
   modoControlado,
+  aoTrocarModo,
   poster,
   tamanho,
   className,
@@ -291,6 +293,7 @@ export function Property3DViewer({
   const trocarModo = (id: ModoId) => {
     setAtivo(null)
     setModo(id)
+    aoTrocarModo?.(id)
   }
   const passo = (d: number) => {
     const i = pontos.findIndex((p) => p.no === ativo)
@@ -298,7 +301,8 @@ export function Property3DViewer({
   }
 
   const mostrarCapa = estado === 'ocioso' || (telaPequena() && !imersivo && estado === 'ativo')
-  const mostrarAbas = eCasa && completo && !modoControlado
+  // Em tela cheia a lista de modos da seção fica escondida: as abas aparecem no 3D.
+  const mostrarAbas = eCasa && completo && (!modoControlado || imersivo)
 
   return (
     <div
