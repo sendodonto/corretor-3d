@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { site } from '@/config/site'
-import { linkWhatsApp } from '@/lib/whatsapp'
+import { linkDemo, linkWhatsApp } from '@/lib/whatsapp'
+import { Marca } from './Header'
 import { Logo } from './Logo'
 
 export function Footer() {
@@ -10,10 +11,10 @@ export function Footer() {
       <div className="mx-auto grid max-w-[1240px] gap-12 px-5 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:px-8">
         <div>
           <Link href="/" className="inline-flex" aria-label={`${site.marca} — início`}>
-            <Logo className="h-7" />
+            <Marca />
           </Link>
-          <p className="mt-4 max-w-[30ch] text-[14.5px] leading-relaxed text-suave">
-            {c.nome}, {c.cargo.toLowerCase()} em {site.regiao}. {c.creci ? `CRECI ${c.creci}.` : 'CRECI em registro.'}
+          <p className="mt-4 max-w-[32ch] text-[14.5px] leading-relaxed text-suave">
+            {c.nome}, {c.cargo.toLowerCase()} em {site.regiao}. {c.creci}.
           </p>
         </div>
         <nav aria-label="Imóveis" className="text-[14.5px]">
@@ -22,14 +23,15 @@ export function Footer() {
             <li><Link className="hover:text-tinta" href="/imoveis">Todos os imóveis</Link></li>
             <li><Link className="hover:text-tinta" href="/imoveis?tour=3d">Com tour 3D</Link></li>
             <li><Link className="hover:text-tinta" href="/imoveis?finalidade=Aluguel">Para alugar</Link></li>
+            <li><Link className="hover:text-tinta" href="/#anunciar">Anunciar meu imóvel</Link></li>
           </ul>
         </nav>
         <nav aria-label="Site" className="text-[14.5px]">
-          <p className="font-medium">Site</p>
+          <p className="font-medium">{site.marca}</p>
           <ul className="mt-4 grid gap-2.5 text-suave">
-            <li><Link className="hover:text-tinta" href="/#explore">Explore em 3D</Link></li>
+            <li><Link className="hover:text-tinta" href="/#explore">Tour 3D</Link></li>
             <li><Link className="hover:text-tinta" href="/#como-funciona">Como funciona</Link></li>
-            <li><Link className="hover:text-tinta" href="/#corretor">Sobre o corretor</Link></li>
+            <li><Link className="hover:text-tinta" href="/#corretor">Sobre a {c.nome.split(' ')[0]}</Link></li>
           </ul>
         </nav>
         <div className="text-[14.5px]">
@@ -37,13 +39,22 @@ export function Footer() {
           <ul className="mt-4 grid gap-2.5 text-suave">
             <li><a className="hover:text-tinta" href={linkWhatsApp()} target="_blank" rel="noopener">WhatsApp</a></li>
             <li><a className="hover:text-tinta" href={`mailto:${site.contato.email}`}>{site.contato.email}</a></li>
+            <li>{site.contato.instagram}</li>
+            <li>{site.contato.endereco}</li>
             <li>{site.contato.horario}</li>
           </ul>
         </div>
       </div>
-      <div className="mx-auto mt-14 flex max-w-[1240px] flex-col gap-2 border-t border-linha px-5 pt-6 text-[12.5px] leading-relaxed text-suave md:flex-row md:justify-between md:px-8">
-        <p>© {new Date().getFullYear()} {site.marca}. Imóveis e valores de demonstração.</p>
-        <p>Modelos 3D e imagens renderizadas são estudos ilustrativos; fotos marcadas como referência são de banco de imagens (Unsplash).</p>
+      <div className="mx-auto mt-14 flex max-w-[1240px] flex-col gap-4 border-t border-linha px-5 pt-6 text-[12.5px] leading-relaxed text-suave md:flex-row md:items-center md:justify-between md:px-8">
+        <p>
+          © {new Date().getFullYear()} {site.marca}. Imagens meramente ilustrativas.
+        </p>
+        {site.demo.ativo && (
+          <a href={linkDemo()} target="_blank" rel="noopener" className="inline-flex items-center gap-2 text-tinta-2 hover:text-tinta">
+            Site criado pela
+            <Logo className="h-[15px]" />
+          </a>
+        )}
       </div>
     </footer>
   )

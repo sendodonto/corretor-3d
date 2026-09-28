@@ -154,7 +154,7 @@ export function PropertyFilters({
   return (
     <>
       {/* desktop */}
-      <aside className="sticky top-24 hidden self-start lg:block" aria-label="Filtros">
+      <aside className="sticky top-[calc(var(--topo)+1.5rem)] hidden self-start lg:block" aria-label="Filtros">
         <div className="grid gap-5">
           <Campos id={`${id}-d`} f={filtros} mudar={(p) => aoMudar({ ...filtros, ...p })} />
           {ativos > 0 && (

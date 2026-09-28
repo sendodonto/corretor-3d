@@ -18,7 +18,7 @@ const TEXTOS: Record<ModoId, string> = {
 export function ExploreSection() {
   const [modo, setModo] = useState<ModoId>('externa')
   return (
-    <section id="explore" className="scroll-mt-20 py-24 md:py-32">
+    <section id="explore" className="scroll-mt-[var(--topo)] py-24 md:py-32">
       <div className="mx-auto max-w-[1240px] px-5 md:px-8">
         <Reveal className="max-w-[720px]">
           <p className="sobretitulo">Tour 3D</p>

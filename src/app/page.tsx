@@ -11,6 +11,7 @@ import { AgentProfile } from '@/components/AgentProfile'
 import { Reveal } from '@/components/Reveal'
 import { IconeWhatsApp } from '@/components/WhatsAppCTA'
 import { BotaoAgendar } from '@/components/BotaoAgendar'
+import { AnunciarImovel } from '@/components/AnunciarImovel'
 
 const PASSOS = [
   {
@@ -34,8 +35,8 @@ export default function Home() {
   return (
     <>
       {/* ——— Hero 40/60 ——— */}
-      <section className="relative overflow-hidden pt-16">
-        <div className="mx-auto grid max-w-[1400px] items-center lg:min-h-[calc(100svh-64px)] lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)]">
+      <section className="relative overflow-hidden pt-[var(--topo)]">
+        <div className="mx-auto grid max-w-[1400px] items-center lg:min-h-[calc(100svh-var(--topo))] lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)]">
           <div className="px-5 pb-6 pt-10 md:px-8 lg:py-16 lg:pl-12 lg:pr-4">
             <Reveal>
               <p className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[13px] font-medium text-tinta-2 shadow-[0_0_0_1px_var(--color-linha)]">
@@ -65,7 +66,7 @@ export default function Home() {
             </Reveal>
           </div>
 
-          <div className="relative h-[62svh] min-h-[380px] lg:h-[calc(100svh-64px)] lg:max-h-[860px]">
+          <div className="relative h-[62svh] min-h-[380px] lg:h-[calc(100svh-var(--topo))] lg:max-h-[860px]">
             <Property3DViewer
               modelo="casa"
               nome="Casa Alameda"
@@ -89,7 +90,7 @@ export default function Home() {
       </section>
 
       {/* ——— Busca ——— */}
-      <section className="relative z-10 mx-auto max-w-[1100px] px-5 md:px-8 lg:-mt-6" aria-label="Busca">
+      <section className="relative z-10 mx-auto mt-6 max-w-[1100px] px-5 md:px-8" aria-label="Busca">
         <Reveal>
           <SearchBar />
         </Reveal>
@@ -121,7 +122,7 @@ export default function Home() {
       <ExploreSection />
 
       {/* ——— Como funciona ——— */}
-      <section id="como-funciona" className="scroll-mt-20 bg-white py-24 md:py-32">
+      <section id="como-funciona" className="scroll-mt-[var(--topo)] bg-white py-24 md:py-32">
         <div className="mx-auto max-w-[1240px] px-5 md:px-8">
           <Reveal className="max-w-[640px]">
             <p className="sobretitulo">Como funciona</p>
@@ -147,7 +148,7 @@ export default function Home() {
       </section>
 
       {/* ——— Corretor ——— */}
-      <section id="corretor" className="scroll-mt-20 py-24 md:py-32">
+      <section id="corretor" className="scroll-mt-[var(--topo)] py-24 md:py-32">
         <div className="mx-auto max-w-[1240px] px-5 md:px-8">
           <Reveal>
             <AgentProfile />
@@ -161,7 +162,7 @@ export default function Home() {
           <div className="mx-auto max-w-[1240px] px-5 md:px-8">
             <Reveal>
               <p className="sobretitulo">Depoimentos</p>
-              <h2 id="depoimentos" className="titulo-l mt-3">Quem já comprou</h2>
+              <h2 id="depoimentos" className="titulo-l mt-3">Quem comprou com a {site.corretor.nome.split(' ')[0]}</h2>
             </Reveal>
             <div className="trilho mt-12">
               {site.depoimentos.map((d, i) => (
@@ -179,6 +180,8 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      <AnunciarImovel />
 
       {/* ——— CTA ——— */}
       <section className="px-5 pb-24 md:px-8 md:pb-32">

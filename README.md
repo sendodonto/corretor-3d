@@ -1,13 +1,17 @@
-# Módulo — imóveis explorados em 3D
+# Site de corretor com tour 3D — demonstração da Módulo
 
 Site de corretor com tour 3D próprio: **explore seu próximo imóvel antes mesmo da visita**.
 Next.js (export estático) · Tailwind CSS 4 · Motion · three.js.
 
 Publicado em: https://sendodonto.github.io/corretor-3d/
 
-> **Demonstração.** Nome do corretor, CRECI, WhatsApp, imóveis, preços e endereços são
-> provisórios. Os modelos 3D e as imagens renderizadas são estudos autorais com medidas
-> aproximadas; as fotos marcadas como "Foto de referência" são do Unsplash.
+> **Site de demonstração da Módulo.** A corretora "Helena Prado", a marca "Prado Imóveis",
+> o CRECI, os números, os depoimentos, os imóveis e os preços são **fictícios**, para mostrar
+> o site pronto a corretores. A faixa do topo ("Quero um site assim") leva ao WhatsApp da
+> Módulo (`demo.whatsapp` em `src/config/site.ts`). Fotos: Unsplash; tours 3D: estudos autorais.
+>
+> Para um cliente real: troque todos os dados pelos reais (depoimentos só com autorização)
+> e desligue `demo.ativo`.
 
 ## Onde trocar os dados
 
@@ -20,9 +24,8 @@ Publicado em: https://sendodonto.github.io/corretor-3d/
 
 - Com `contato.whatsapp` vazio, os botões abrem o WhatsApp com a mensagem pronta para o
   visitante escolher o contato. Preencha só com dígitos, com DDI e DDD: `5551999999999`.
-- Depoimentos e números de atuação ficam escondidos enquanto as listas estiverem vazias.
-  Use apenas depoimentos reais, com autorização.
-- Sem `corretor.foto`, aparece um monograma (nunca foto de banco no lugar do corretor).
+- Depoimentos e números de atuação ficam escondidos quando as listas estão vazias.
+- Sem `corretor.foto`, aparece um monograma com as iniciais.
 
 ## Componentes
 

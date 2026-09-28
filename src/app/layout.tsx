@@ -20,7 +20,12 @@ export const viewport: Viewport = { themeColor: '#f7f6f3', width: 'device-width'
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="pt-BR" className={geist.variable}>
+    <html
+      lang="pt-BR"
+      className={geist.variable}
+      // Altura do topo fixo: cabeçalho (64 px) + faixa de demonstração (36 px).
+      style={{ '--topo': site.demo.ativo ? '100px' : '64px' } as React.CSSProperties}
+    >
       <body className="min-h-dvh">
         <AgendamentoProvider>
           <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[400] focus:rounded-full focus:bg-tinta focus:px-4 focus:py-2 focus:text-white">

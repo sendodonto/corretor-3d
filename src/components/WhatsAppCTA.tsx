@@ -31,7 +31,7 @@ export function WhatsAppCTA() {
   const imovel = useContextoImovel()
   const { abrir } = useAgendamento()
   const [visivel, setVisivel] = useState(false)
-  const mensagem = imovel ? site.mensagens.imovel(imovel.titulo) : site.mensagens.geral
+  const mensagem = imovel ? site.mensagens.imovel(imovel.titulo, imovel.codigo) : site.mensagens.geral
 
   useEffect(() => {
     const aoRolar = () => setVisivel(scrollY > 320)

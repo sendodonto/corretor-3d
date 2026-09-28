@@ -6,12 +6,20 @@ import { ChevronLeft, ChevronRight, Images, X } from 'lucide-react'
 import type { Foto } from '@/data/imoveis'
 import { asset } from '@/lib/base'
 
-const selo = (f: Foto) => (f.origem === 'render' ? 'Estudo 3D' : 'Foto de referência')
 
 /**
  * Galeria em mosaico (1 grande + 4) com lightbox em tela cheia:
  * setas, teclado, arrastar para os lados no celular e contador.
  */
+/** Mosaico no desktop: a foto principal ocupa metade; as demais se ajustam à quantidade. */
+function mosaico(i: number, n: number) {
+  if (i === 0) return n === 1 ? 'md:col-span-4 md:row-span-2' : 'md:col-span-2 md:row-span-2'
+  if (n === 2) return 'md:col-span-2 md:row-span-2'
+  if (n === 3) return 'md:col-span-2'
+  if (n === 4 && i === 1) return 'md:col-span-2'
+  return ''
+}
+
 export function PropertyGallery({ fotos, titulo }: { fotos: Foto[]; titulo: string }) {
   const [aberta, setAberta] = useState<number | null>(null)
   const visiveis = fotos.slice(0, 5)
@@ -26,20 +34,17 @@ export function PropertyGallery({ fotos, titulo }: { fotos: Foto[]; titulo: stri
             type="button"
             onClick={() => setAberta(i)}
             className={`group relative overflow-hidden bg-nevoa ${
-              i === 0 ? 'aspect-[4/3] rounded-[18px] md:col-span-2 md:row-span-2 md:aspect-auto' : 'hidden rounded-[14px] md:block'
-            }`}
+              i === 0 ? 'aspect-[4/3] rounded-[18px] md:aspect-auto' : 'hidden rounded-[14px] md:block'
+            } ${mosaico(i, visiveis.length)}`}
             aria-label={`Abrir foto ${i + 1} de ${fotos.length}: ${f.alt}`}
           >
             <img
-              src={asset(i === 0 ? f.src : f.mini)}
+              src={asset(i === 0 || visiveis.length < 5 ? f.src : f.mini)}
               alt={f.alt}
               loading={i === 0 ? 'eager' : 'lazy'}
               decoding="async"
               className="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
             />
-            {i === 0 && (
-              <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[12px] font-medium backdrop-blur">{selo(f)}</span>
-            )}
             {(i === visiveis.length - 1 || i === 0) && (
               <span
                 className={`absolute bottom-3 right-3 items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[13px] font-medium backdrop-blur ${
@@ -138,7 +143,6 @@ function Lightbox({ fotos, inicio, titulo, aoFechar }: { fotos: Foto[]; inicio: 
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-[14px] md:px-6">
         <p className="text-white/85">{f.alt}</p>
-        <span className="rounded-full bg-white/10 px-2.5 py-1 text-[12px] text-white/70">{selo(f)}</span>
       </div>
     </motion.div>
   )

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function PaginaImoveis() {
   return (
-    <div className="mx-auto max-w-[1240px] px-5 pb-24 pt-28 md:px-8 md:pt-36">
+    <div className="mx-auto max-w-[1240px] px-5 pb-24 pt-[calc(var(--topo)+3rem)] md:px-8 md:pt-[calc(var(--topo)+5rem)]">
       <p className="sobretitulo">Catálogo</p>
       <h1 className="titulo-l mt-3">Imóveis em {site.cidade}</h1>
       <p className="texto-corpo mt-4 max-w-[56ch]">
