@@ -54,6 +54,13 @@ const un = (id: string, alt: string): Foto => ({
   alt,
   origem: 'referencia',
 })
+/** Imagem do modelo 3D (a mesma do pôster do visualizador). */
+const modelo3d = (nome: string, alt: string): Foto => ({
+  src: `/posters/${nome}.webp`,
+  mini: `/posters/${nome}.webp`,
+  alt,
+  origem: 'render',
+})
 const render = (pasta: string, nome: string, alt: string): Foto => ({
   src: `/fotos/${pasta}/${nome}.webp`,
   mini: `/fotos/${pasta}/${nome}-p.webp`,
@@ -148,6 +155,7 @@ export const imoveis: Imovel[] = [
     ],
     titulo3d: 'Tour 3D do living com home office',
     fotos: [
+      modelo3d('sala', 'Living com painel de carvalho, rack suspenso e home office (modelo 3D)'),
       un('1600210492486-724fe5c67fb0', 'Sala de estar com sofá de couro e janelas altas'),
       un('1600607687939-ce8a6c25118c', 'Living integrado com painel de madeira'),
       un('1616594039964-ae9021a400a0', 'Dormitório com cabeceira estofada'),
@@ -194,6 +202,7 @@ export const imoveis: Imovel[] = [
     ],
     titulo3d: 'Tour 3D da cozinha planejada',
     fotos: [
+      modelo3d('cozinha', 'Cozinha planejada em L com península (modelo 3D)'),
       un('1554995207-c18c203602cb', 'Living integrado à cozinha, com sofá de couro e plantas'),
       un('1493809842364-78817add7ffb', 'Sala de estar com piso em espinha de peixe'),
       un('1560448204-e02f11c3d0e2', 'Living amplo com janelas'),
