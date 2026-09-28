@@ -45,3 +45,4 @@ next-env.d.ts
 /renders/
 video-tmp/
 *.mp4
+!public/video/*.mp4
