@@ -6,6 +6,7 @@ import { Property3DViewer } from '@/components/Property3DViewer'
 import { PropertyCard } from '@/components/PropertyCard'
 import { SearchBar } from '@/components/SearchBar'
 import { ExploreSection } from '@/components/ExploreSection'
+import { MaisImoveis } from '@/components/MaisImoveis'
 import { AgentProfile } from '@/components/AgentProfile'
 import { Reveal } from '@/components/Reveal'
 import { AnunciarImovel } from '@/components/AnunciarImovel'
@@ -111,6 +112,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <MaisImoveis />
 
       <ExploreSection />
 
