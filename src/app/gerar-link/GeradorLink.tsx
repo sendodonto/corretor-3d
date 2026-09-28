@@ -11,7 +11,8 @@ function Copiar({ texto, rotulo }: { texto: string; rotulo: string }) {
   return (
     <button
       type="button"
-      className="botao botao-primario"
+      disabled={!texto}
+      className="botao botao-primario disabled:opacity-40"
       onClick={async () => {
         await navigator.clipboard?.writeText(texto)
         setOk(true)
@@ -45,7 +46,7 @@ export function GeradorLink() {
     : ''
 
   return (
-    <div className="mt-10 grid gap-5">
+    <div className="mt-10 grid gap-5 [&>*]:min-w-0">
       <div>
         <label htmlFor={`${id}-n`} className="rotulo-campo">Nome do corretor *</label>
         <input id={`${id}-n`} className="campo" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ana Ferreira" />
@@ -73,14 +74,21 @@ export function GeradorLink() {
         <input id={`${id}-r`} className="campo" value={creci} onChange={(e) => setCreci(e.target.value)} placeholder="Sem CRECI, ele não aparece" />
       </div>
 
-      {link && (
-        <div className="mt-4 grid gap-5 rounded-[var(--radius-cartao)] bg-white p-6 shadow-[0_0_0_1px_var(--color-linha)]">
+      <div className="mt-4 grid gap-5 rounded-[var(--radius-cartao)] bg-white p-6 shadow-[0_0_0_1px_var(--color-linha)] [&>*]:min-w-0">
           <div>
             <p className="rotulo-campo">Link</p>
-            <p className="break-all rounded-xl bg-papel p-3 text-[14px]">{link}</p>
+            <p className={`truncate rounded-xl bg-papel p-3 text-[14px] ${link ? '' : 'text-suave'}`} title={link}>
+              {link || 'Digite o nome do corretor para gerar o link'}
+            </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Copiar texto={link} rotulo="Copiar link" />
-              <a href={link} target="_blank" rel="noopener" className="botao botao-secundario">
+              <a
+                href={link || undefined}
+                target="_blank"
+                rel="noopener"
+                aria-disabled={!link}
+                className={`botao botao-secundario ${link ? '' : 'pointer-events-none opacity-40'}`}
+              >
                 <ExternalLink size={17} strokeWidth={1.8} aria-hidden />
                 Abrir prévia
               </a>
@@ -88,13 +96,14 @@ export function GeradorLink() {
           </div>
           <div>
             <p className="rotulo-campo">Mensagem sugerida</p>
-            <p className="whitespace-pre-line rounded-xl bg-papel p-3 text-[14px] leading-relaxed">{mensagem}</p>
+            <p className="h-40 overflow-y-auto whitespace-pre-line [overflow-wrap:anywhere] rounded-xl bg-papel p-3 text-[14px] leading-relaxed">
+              {mensagem || <span className="text-suave">A mensagem aparece aqui.</span>}
+            </p>
             <div className="mt-3">
               <Copiar texto={mensagem} rotulo="Copiar mensagem" />
             </div>
           </div>
-        </div>
-      )}
+      </div>
     </div>
   )
 }
