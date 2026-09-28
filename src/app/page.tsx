@@ -37,7 +37,7 @@ export default function Home() {
       {/* ——— Hero 40/60 ——— */}
       <section className="relative overflow-hidden pt-[var(--topo)]">
         <div className="mx-auto grid max-w-[1400px] items-center lg:min-h-[calc(100svh-var(--topo))] lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)]">
-          <div className="px-5 pb-6 pt-10 md:px-8 lg:py-16 lg:pl-12 lg:pr-4">
+          <div className="px-5 pb-0 pt-6 md:px-8 md:pt-10 lg:py-16 lg:pl-12 lg:pr-4">
             <Reveal>
               <p className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[13px] font-medium text-tinta-2 shadow-[0_0_0_1px_var(--color-linha)]">
                 <span className="size-1.5 rounded-full bg-acento" aria-hidden />
@@ -66,7 +66,7 @@ export default function Home() {
             </Reveal>
           </div>
 
-          <div className="relative h-[62svh] min-h-[380px] lg:h-[calc(100svh-var(--topo))] lg:max-h-[860px]">
+          <div className="relative h-[52svh] min-h-[360px] lg:h-[calc(100svh-var(--topo))] lg:max-h-[860px]">
             <Property3DViewer
               modelo="casa"
               nome="Casa Alameda"

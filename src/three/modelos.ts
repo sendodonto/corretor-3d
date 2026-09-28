@@ -85,7 +85,7 @@ export const MODELOS: Record<string, ConfigModelo> = {
       az: 0.62,
       polar: 1.16,
       dist: 30,
-      largura: { paisagem: 19, retrato: 14, estreito: 16 },
+      largura: { paisagem: 21.5, retrato: 14, estreito: 16 },
     },
     limites: {
       distMin: 3,
