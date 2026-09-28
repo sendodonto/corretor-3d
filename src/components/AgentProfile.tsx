@@ -19,7 +19,7 @@ const iniciais = (nome: string) =>
 function Retrato({ grande = false }: { grande?: boolean }) {
   const c = site.corretor
   const tam = grande ? 'size-full' : 'size-14'
-  if (c.foto) return <img src={asset(c.foto)} alt={c.nome} className={`${tam} rounded-[inherit] object-cover object-top`} />
+  if (c.foto) return <img src={asset(c.foto)} alt={c.nome} className={`${tam} rounded-[inherit] object-cover object-[50%_42%]`} />
   return (
     <span
       className={`${tam} grid place-items-center rounded-[inherit] bg-[radial-gradient(120%_120%_at_30%_20%,#2a7a65_0%,#1e5f4e_45%,#123a30_100%)] font-semibold tracking-[-0.04em] text-white ${
