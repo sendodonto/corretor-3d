@@ -48,6 +48,10 @@ export interface Motor {
   /** Área do quadro coberta pela interface (px): a câmera centraliza a cozinha no resto. */
   definirMargens(m: { direita?: number; topo?: number; base?: number }): void;
   pausar(sim: boolean): void;
+  /** Gravação: posiciona a câmera na hora, sem transição nem limites de alvo. */
+  definirCamera(orbita: Orbita): void;
+  /** Gravação: posição na tela (px) e visibilidade de nós HOTSPOT_*. */
+  projetar(nos: string[]): Record<string, { x: number; y: number; visivel: boolean }>;
   /** Oculta grupos de primeiro nível do GLB (coberturas, pavimento superior). */
   ocultar(nomes: string[]): void;
   /** Leva a câmera a uma órbita (vista externa, planta), com limites próprios. */
@@ -490,6 +494,33 @@ export async function criarMotor(o: OpcoesMotor): Promise<Motor> {
       const atual = orbitaAtual();
       const dist = THREE.MathUtils.clamp(atual.dist * fator, LIMITES.distMin, LIMITES.distMax);
       irPara({ ...atual, dist });
+    },
+    definirCamera(orbita) {
+      giro = null;
+      transicao = null;
+      naVistaInicial = false;
+      aplicarOrbita(orbita);
+      pedirQuadro();
+    },
+    projetar(nos) {
+      const r: Record<string, { x: number; y: number; visivel: boolean }> = {};
+      const v = new THREE.Vector3();
+      for (const no of nos) {
+        const h = cena.hotspots.find((x) => x.no === no);
+        if (!h) continue;
+        v.copy(h.posicao).project(camera);
+        const dir = tmp.copy(h.posicao).sub(camera.position);
+        const dist = dir.length();
+        raio.set(camera.position, dir.normalize());
+        raio.far = dist;
+        const hit = raio.intersectObjects(solidosVisiveis, false)[0];
+        r[no] = {
+          x: ((v.x + 1) / 2) * largura,
+          y: ((1 - v.y) / 2) * altura,
+          visivel: v.z < 1 && (!hit || hit.distance > dist - 0.09),
+        };
+      }
+      return r;
     },
     girar(dAz, dPolar) {
       transicao = null;

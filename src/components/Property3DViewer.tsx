@@ -195,6 +195,8 @@ export function Property3DViewer({
           return
         }
         motorRef.current = motor
+        // ?gravacao: o script de gravação controla a câmera diretamente
+        if (new URLSearchParams(location.search).has('gravacao')) (window as unknown as { __motor?: Motor }).__motor = motor
         setDadosGlb(Object.fromEntries(motor.hotspots.map((h) => [h.no, { titulo: h.titulo, descricao: h.descricao, animacao: h.animacao }])))
         setEstado('ativo')
       } catch (e) {
