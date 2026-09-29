@@ -70,6 +70,8 @@ export interface ConfigModelo {
   pisoY?: number;
   /** Modelo ao ar livre: reflexo e luz de céu em vez de sala. */
   externo?: boolean;
+  /** Versão leve do GLB (celulares e aparelhos fracos). */
+  arquivoLeve?: string;
 }
 
 const LIMITES_PADRAO = { distMin: 0.8, distMax: 10, polarMin: 0.18, polarMax: 1.58, azMin: -0.45, azMax: 1.95, alturaMin: 0.3 };
@@ -96,6 +98,69 @@ export const MODELOS: Record<string, ConfigModelo> = {
       azMax: Infinity,
       alvoMin: [-8, -0.5, -16],
       alvoMax: [13, 7, 15],
+      alturaMin: 0.6,
+    },
+    solidos: [],
+    luzes: [],
+    escala: 4.6,
+    pisoY: -0.71,
+    externo: true,
+    arquivoLeve: '/modelos/casa-alameda-leve.glb',
+  },
+
+  // Casa Horizonte: térrea, lote de ~28 × 25 m (pavilhão de hóspedes a leste).
+  horizonte: {
+    id: 'horizonte',
+    arquivo: '/modelos/casa-horizonte.glb',
+    arquivoLeve: '/modelos/casa-horizonte-leve.glb',
+    inicial: {
+      alvo: [2.2, 0.4, 1.6],
+      alvoRetrato: [3.4, -1.0, 1.4],
+      az: 0.62,
+      polar: 1.1,
+      dist: 30,
+      largura: { paisagem: 20, retrato: 14, estreito: 16 },
+    },
+    limites: {
+      distMin: 3,
+      distMax: 80,
+      polarMin: 0.04,
+      polarMax: 1.42,
+      azMin: -Infinity,
+      azMax: Infinity,
+      alvoMin: [-11, -0.5, -10],
+      alvoMax: [15, 5, 13],
+      alturaMin: 0.6,
+    },
+    solidos: [],
+    luzes: [],
+    escala: 4.4,
+    pisoY: -0.71,
+    externo: true,
+  },
+
+  // Casa Serra: sobrado com telhados de duas águas, lote de ~23 × 34 m.
+  serra: {
+    id: 'serra',
+    arquivo: '/modelos/casa-serra.glb',
+    arquivoLeve: '/modelos/casa-serra-leve.glb',
+    inicial: {
+      alvo: [2.0, 1.2, 1.2],
+      alvoRetrato: [2.2, -0.6, 1.0],
+      az: 0.62,
+      polar: 1.14,
+      dist: 30,
+      largura: { paisagem: 21.5, retrato: 14, estreito: 16 },
+    },
+    limites: {
+      distMin: 3,
+      distMax: 80,
+      polarMin: 0.04,
+      polarMax: 1.42,
+      azMin: -Infinity,
+      azMax: Infinity,
+      alvoMin: [-8, -0.5, -16],
+      alvoMax: [13, 8, 15],
       alturaMin: 0.6,
     },
     solidos: [],

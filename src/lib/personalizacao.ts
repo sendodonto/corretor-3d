@@ -4,7 +4,8 @@
 // recebê-lo, e o site aparece com a marca dele.
 //   ?para=Ana%20Ferreira            nome (obrigatório)
 //   &marca=Ferreira                 nome no logotipo de texto (padrão: sobrenome)
-//   &foto=https://...               foto (padrão: monograma com as iniciais)
+//   &f=abc123.jpg                   foto enviada em /gerar-link (padrão: iniciais)
+//   &foto=https://...               ou o endereço de uma foto
 //   &creci=CRECI/RS%2000000-F       CRECI real (padrão: não mostra)
 //   &cargo=Corretora%20de%20imóveis (padrão: "Corretagem de imóveis")
 // A personalização fica guardada na aba (sessionStorage) enquanto a pessoa navega.
@@ -12,6 +13,7 @@
 // junto do nome de uma pessoa real.
 import { useMemo, useSyncExternalStore } from 'react'
 import { site } from '@/config/site'
+import { urlDaFoto } from './fotos'
 
 const CHAVE = 'previa-corretor'
 
@@ -34,7 +36,8 @@ function ler(): string {
       const dados = JSON.stringify({
         nome,
         marca: q.get('marca')?.trim() ?? '',
-        foto: q.get('foto')?.trim() ?? '',
+        // ?f=arquivo.jpg: foto enviada em /gerar-link; ?foto=https://…: endereço direto
+        foto: (q.get('f') ? urlDaFoto(q.get('f')!.trim()) : '') || (q.get('foto')?.trim() ?? ''),
         creci: q.get('creci')?.trim() ?? '',
         cargo: q.get('cargo')?.trim() ?? '',
       })

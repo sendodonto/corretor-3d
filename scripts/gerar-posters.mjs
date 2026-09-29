@@ -12,10 +12,10 @@ const ALVOS = [
   ['/', '.v3d-hero', 'casa-hero-retrato', 780, 1046],
   ['/', '#explore .v3d', 'casa-explore', 1280, 880],
   ['/', '#explore .v3d', 'casa-explore-retrato', 780, 1046],
-  ['/imoveis/apartamento-moinhos/', '.v3d', 'sala', 1280, 880],
-  ['/imoveis/apartamento-moinhos/', '.v3d', 'sala-retrato', 780, 1046],
-  ['/imoveis/apartamento-petropolis/', '.v3d', 'cozinha', 1280, 880],
-  ['/imoveis/apartamento-petropolis/', '.v3d', 'cozinha-retrato', 780, 1046],
+  ['/imoveis/casa-horizonte', '.v3d', 'horizonte', 1280, 880],
+  ['/imoveis/casa-horizonte', '.v3d', 'horizonte-retrato', 780, 1046],
+  ['/imoveis/casa-serra', '.v3d', 'serra', 1280, 880],
+  ['/imoveis/casa-serra', '.v3d', 'serra-retrato', 780, 1046],
 ]
 const SO = process.argv.slice(2)
 

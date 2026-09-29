@@ -5,10 +5,7 @@ import type { Motor, PosicaoMarcador } from '@/three/motor'
 import type { Qualidade } from '@/three/cena'
 import type { Orbita } from '@/three/camera'
 import { MODELOS } from '@/three/modelos'
-import { modos as modosCasa, type ModoId } from '@/three/conteudo/casa'
-import { pontos as pontosCozinha, type PontoCozinha as Ponto } from '@/three/conteudo/cozinha'
-import { pontos as pontosCloset } from '@/three/conteudo/closet'
-import { pontos as pontosSala } from '@/three/conteudo/sala'
+import { MODOS, type ModoId } from '@/three/conteudo/casa'
 import { asset } from '@/lib/base'
 
 /*
@@ -23,9 +20,9 @@ import { asset } from '@/lib/base'
  * presa no 3D). Aparelhos fracos recebem a versão leve do modelo.
  */
 
-export type ModeloId = 'casa' | 'sala' | 'cozinha' | 'closet'
+/** Casas com tour 3D: Alameda ('casa'), Horizonte e Serra. */
+export type ModeloId = keyof typeof MODOS
 
-const PONTOS: Record<Exclude<ModeloId, 'casa'>, Ponto[]> = { cozinha: pontosCozinha, closet: pontosCloset, sala: pontosSala }
 const ESTUDIO = { fundo: 0xf7f6f3, chao: 0xe4e2dd, transparente: true }
 
 const telaPequena = () => matchMedia('(max-width: 899px), (pointer: coarse)').matches
@@ -94,20 +91,19 @@ export function Property3DViewer({
   const [dadosGlb, setDadosGlb] = useState<Record<string, { titulo: string; descricao: string; animacao?: string }>>({})
 
   const cfg = MODELOS[modelo]
-  const eCasa = modelo === 'casa'
+  const modosCasa = MODOS[modelo]
   const completo = variante === 'completo' || imersivo
-  const modoAtual = eCasa ? modosCasa.find((m) => m.id === modo)! : null
+  const modoAtual = modosCasa.find((m) => m.id === modo)!
 
   const pontos = useMemo(() => {
-    const base = eCasa ? modoAtual!.pontos : PONTOS[modelo as Exclude<ModeloId, 'casa'>]
-    return base.map((p, i) => ({
+    return modoAtual.pontos.map((p, i) => ({
       ...p,
       numero: i + 1,
       titulo: p.titulo ?? dadosGlb[p.no]?.titulo ?? p.rotulo,
       descricao: dadosGlb[p.no]?.descricao ?? '',
       animacao: dadosGlb[p.no]?.animacao,
     }))
-  }, [eCasa, modoAtual, modelo, dadosGlb])
+  }, [modoAtual, dadosGlb])
   const pontoAtivo = pontos.find((p) => p.no === ativo) ?? null
 
   const pedir = useCallback(() => {
@@ -160,8 +156,8 @@ export function Property3DViewer({
         const { criarMotor } = await import('@/three/motor')
         if (cancelado || !alvoCanvas.current) return
         const qualidade = detectarQualidade()
-        const arquivo = eCasa && qualidade !== 'alta' ? '/modelos/casa-alameda-leve.glb' : cfg.arquivo
-        const todos = eCasa ? modosCasa.flatMap((m) => m.pontos) : PONTOS[modelo as Exclude<ModeloId, 'casa'>]
+        const arquivo = cfg.arquivoLeve && qualidade !== 'alta' ? cfg.arquivoLeve : cfg.arquivo
+        const todos = modosCasa.flatMap((m) => m.pontos)
         const motor = await criarMotor({
           container: alvoCanvas.current,
           modelo: asset(arquivo),
@@ -210,7 +206,7 @@ export function Property3DViewer({
       motorRef.current = null
       modoAplicado.current = null
     }
-  }, [pedido, modelo, cfg, eCasa, variante])
+  }, [pedido, modelo, cfg, modosCasa, variante])
 
   // ——— Modo da casa: grupos ocultos + câmera ———
   useEffect(() => {
@@ -306,7 +302,7 @@ export function Property3DViewer({
 
   const mostrarCapa = estado === 'ocioso' || (telaPequena() && !imersivo && estado === 'ativo')
   // Em tela cheia a lista de modos da seção fica escondida: as abas aparecem no 3D.
-  const mostrarAbas = eCasa && completo && (!modoControlado || imersivo)
+  const mostrarAbas = completo && (!modoControlado || imersivo)
 
   return (
     <div
@@ -508,7 +504,7 @@ export function Property3DViewer({
           </div>
         )}
 
-        {eCasa && completo && modoAtual && !pontos.length && estado === 'ativo' && (
+        {completo && !pontos.length && estado === 'ativo' && (
           <p className="v3d-legenda">{modoAtual.legenda}</p>
         )}
       </div>

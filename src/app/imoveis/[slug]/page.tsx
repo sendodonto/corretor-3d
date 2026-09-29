@@ -28,9 +28,8 @@ export async function generateMetadata({ params }: PageProps<'/imoveis/[slug]'>)
 
 const POSTERS = {
   casa: { paisagem: '/posters/casa-explore.webp', retrato: '/posters/casa-explore-retrato.webp' },
-  sala: { paisagem: '/posters/sala.webp', retrato: '/posters/sala-retrato.webp' },
-  cozinha: { paisagem: '/posters/cozinha.webp', retrato: '/posters/cozinha-retrato.webp' },
-  closet: { paisagem: '/posters/closet.webp', retrato: '/posters/closet-retrato.webp' },
+  horizonte: { paisagem: '/posters/horizonte.webp', retrato: '/posters/horizonte-retrato.webp' },
+  serra: { paisagem: '/posters/serra.webp', retrato: '/posters/serra-retrato.webp' },
 }
 
 /** Mesma finalidade, preferindo mesmo tipo e preço próximo. */
