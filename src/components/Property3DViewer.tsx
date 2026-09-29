@@ -170,6 +170,8 @@ export function Property3DViewer({
           qualidade,
           reduzirMovimento: menosMovimento(),
           girarSozinho: variante === 'hero',
+          // ?gravacao: qualidade máxima em todo quadro (gravação de vídeos)
+          sempreCompleto: new URLSearchParams(location.search).has('gravacao'),
           vistas: Object.fromEntries(todos.map((p) => [p.no, { ...p.vista, alvo: [0, 0, 0] as Orbita['alvo'] }])),
           aoProgredir: (f) => setProgresso(f),
           aoMoverMarcadores: (lista: PosicaoMarcador[]) => {

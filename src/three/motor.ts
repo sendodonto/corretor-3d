@@ -27,6 +27,8 @@ export interface OpcoesMotor {
   vistas: Record<string, Orbita>;
   /** Giro lento inicial, que para no primeiro toque. */
   girarSozinho?: boolean;
+  /** Gravação de vídeo: todo quadro em qualidade máxima (sem quadro leve em movimento). */
+  sempreCompleto?: boolean;
   aoProgredir(fracao: number): void;
   aoMoverMarcadores(posicoes: PosicaoMarcador[]): void;
   aoToqueVazio(): void;
@@ -118,6 +120,9 @@ export async function criarMotor(o: OpcoesMotor): Promise<Motor> {
   let quadroPedido = false;
   let naVistaInicial = true;
   let transicao: null | { t0: number; dur: number; de: Orbita; para: Orbita } = null;
+  // Ocultar/mostrar grupos (telhado, pavimento): sobem e somem, ou descem e aparecem.
+  type Peca = { g: THREE.Object3D; base: number; de: number; para: number; opDe: number; opPara: number; esconder: boolean; malhas: THREE.Mesh[] };
+  let explosao: null | { t0: number; dur: number; pecas: Peca[] } = null;
   // Giro inicial: bem lento, sem nunca passar de ~40 s (economia de bateria).
   let giro = o.girarSozinho && !o.reduzirMovimento ? { inicio: 0, ultimo: 0 } : null;
 
@@ -179,6 +184,21 @@ export async function criarMotor(o: OpcoesMotor): Promise<Motor> {
       if (k >= 1) transicao = null;
       else continuar = true;
     }
+    if (explosao) {
+      const k = Math.min(1, (agora - explosao.t0) / explosao.dur);
+      const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      for (const p of explosao.pecas) {
+        p.g.position.y = p.base + p.de + (p.para - p.de) * e;
+        const op = p.opDe + (p.opPara - p.opDe) * e;
+        for (const m of p.malhas) (m.material as THREE.Material).opacity = op;
+      }
+      if (k >= 1) {
+        for (const p of explosao.pecas) finalizarPeca(p);
+        explosao = null;
+        solidosVisiveis = solidos.filter(exibida);
+        cena.atualizarSombras();
+      } else continuar = true;
+    }
     if (giro && !transicao) {
       if (!giro.inicio) giro.inicio = giro.ultimo = agora;
       const dt = Math.min(0.05, (agora - giro.ultimo) / 1000);
@@ -202,7 +222,7 @@ export async function criarMotor(o: OpcoesMotor): Promise<Motor> {
     }
     // Em movimento: quadro rápido. Parado: quadro completo, com oclusão de ambiente.
     // No giro automático (lento) o quadro completo continua nítido no desktop.
-    pipeline.render(!continuar || (!!giro && o.qualidade === 'alta' && !transicao && !arrastando));
+    pipeline.render(!!o.sempreCompleto || !continuar || (!!giro && o.qualidade === 'alta' && !transicao && !arrastando));
     atualizarMarcadores(agora, continuar);
     if (continuar) {
       medir(agora);
@@ -405,6 +425,39 @@ export async function criarMotor(o: OpcoesMotor): Promise<Motor> {
   }
   pipeline.render();
 
+  // Durante a animação cada malha usa uma cópia transparente do material
+  // (os materiais são compartilhados entre grupos depois da otimização do GLB).
+  function prepararPeca(g: THREE.Object3D, esconder: boolean, ordem: number): Peca {
+    const malhas: THREE.Mesh[] = [];
+    g.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (!m.isMesh) return;
+      m.userData.materialOriginal = m.material;
+      m.userData.sombraOriginal = m.castShadow;
+      const copia = (Array.isArray(m.material) ? m.material[0] : m.material).clone();
+      copia.transparent = true;
+      m.material = copia;
+      m.castShadow = false;
+      malhas.push(m);
+    });
+    g.userData.baseY ??= g.position.y;
+    // Peças mais altas sobem mais: o conjunto "abre" em camadas.
+    const alt = (2.2 + ordem * 1.4) * Math.min(1, escala / 4);
+    return esconder
+      ? { g, base: g.userData.baseY, de: 0, para: alt, opDe: 1, opPara: 0, esconder, malhas }
+      : // Ao voltar, desce pouco: vindo de cima ela passaria na frente da câmera.
+        { g, base: g.userData.baseY, de: alt * 0.25, para: 0, opDe: 0, opPara: 1, esconder, malhas };
+  }
+  function finalizarPeca(p: Peca) {
+    for (const m of p.malhas) {
+      (m.material as THREE.Material).dispose();
+      m.material = m.userData.materialOriginal;
+      m.castShadow = m.userData.sombraOriginal;
+    }
+    p.g.position.y = p.base;
+    if (p.esconder) p.g.visible = false;
+  }
+
   return {
     hotspots: cena.hotspots,
     focar(no) {
@@ -469,7 +522,23 @@ export async function criarMotor(o: OpcoesMotor): Promise<Motor> {
     },
     ocultar(nomes) {
       const esconder = new Set(nomes);
-      for (const g of cena.modelo.children) g.visible = !esconder.has(g.name);
+      if (explosao) {
+        for (const p of explosao.pecas) finalizarPeca(p);
+        explosao = null;
+      }
+      const mudam = cena.modelo.children.filter((g) => g.visible === esconder.has(g.name));
+      if (o.reduzirMovimento || !mudam.length) {
+        for (const g of cena.modelo.children) g.visible = !esconder.has(g.name);
+      } else {
+        // Ordem pela altura: a cobertura de cima sobe mais que o pavimento.
+        const ordenados = [...mudam].sort((a, b) => new THREE.Box3().setFromObject(a).min.y - new THREE.Box3().setFromObject(b).min.y);
+        const pecas = ordenados.map((g, i) => {
+          const esc = esconder.has(g.name);
+          if (!esc) g.visible = true;
+          return prepararPeca(g, esc, i);
+        });
+        explosao = { t0: performance.now(), dur: 1300, pecas };
+      }
       solidosVisiveis = solidos.filter(exibida);
       cena.atualizarSombras();
       pedirQuadro();
